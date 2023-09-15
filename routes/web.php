@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskFileController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,7 +96,7 @@ Route::prefix('roles')
 
 Route::prefix('users')
     ->name('users.')
-    ->middleware('auth')
+    ->middleware('auth:sanctum')
     ->controller(UserController::class)
     ->group(function () {
         Route::get('', 'index')->name('index');
@@ -108,3 +109,9 @@ Route::get('/halo', function () {
 });
 
 Route::resource('users', UserController::class);
+
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+ 
+    return ['token' => $token->plainTextToken];
+});

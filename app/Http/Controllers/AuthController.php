@@ -30,12 +30,12 @@ class AuthController extends Controller
             $request->all()
         );
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+       
         Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
@@ -62,7 +62,8 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials)) {            
+
             return redirect()->route('home');
         }
 
